@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>查找/添加群组</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__COMMON__/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__COMMON__/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="__COMMON__/css/animate.min.css" rel="stylesheet">
+    <link href="__COMMON__/css/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="__COMMON__/layui/css/layui.css" rel="stylesheet"  media="all">
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="col-sm-12">
+        <div class="tabs-container">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true"> 找人</a>
+                </li>
+                <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">找群</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="tab-1" class="tab-pane active">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-content">
+                                    <form class="form-horizontal m-t" id="userForm" method="post">
+                                        <input type="hidden" name="sex" id="sex"/><!--性别-->
+                                        <input type="hidden" name="age" id="age"/><!--年龄-->
+                                        <input type="hidden" name="pid" id="pid"/><!--省份id-->
+                                        <input type="hidden" name="cid" id="cid"/><!--城市id-->
+                                        <input type="hidden" name="aid" id="aid"/><!--区id-->
+                                        <div class="form-group">
+                                            <div class="col-sm-4">
+                                                <div class="input-group col-sm-12">
+                                                    <input type="text" class="form-control" name="user_name" placeholder="请输入昵称" id="user_name" >
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button data-toggle="dropdown" class="btn btn-white dropdown-toggle col-sm-12" type="button" aria-expanded="false">
+                                                    <span id="csex">选择性别</span>
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <a href="javascript:chsex(0);">不限</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:chsex(1);">男</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:chsex(-1);">女</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button data-toggle="dropdown" class="btn btn-white dropdown-toggle col-sm-12" type="button" aria-expanded="false">
+                                                    <span id="cage">选择年龄</span>
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <a href="javascript:chage('0-0');">不限</a>
+                                                    </li>
+                                                    {if !empty($age)}
+                                                    {foreach name="age" item="vo" key="key"}
+                                                    <li>
+                                                        <a href="javascript:chage('{$key}');">{$vo}</a>
+                                                    </li>
+                                                    {/foreach}
+                                                    {/if}
+                                                </ul>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-white col-sm-12" type="button" id="charea">
+                                                        <span id="ssq">选择地区</span>
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-primary" id="search">搜索</button>
+                                            </span>
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 推荐好友 -->
+                    <div class="row">
+                        <div class="col-sm-3"><label id="s_u_title">好友推荐</label></div>
+                    </div>
+                    <div class="row" id="s_u_data">
+                        {if !empty($user)}
+                        {foreach name="user" item="vo"}
+                        <div class="col-sm-3">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>{$vo.user_name}</h5>
+                                    <span style="margin-left: 10px"><i class="layui-icon" {if condition="$vo['sex'] eq 1"}style="color:#7CA3D2 "{else/}style="color:#FDA357"{/if}>&#xe612;</i></span>
+                                    <span style="margin-left: 10px">{$vo.age}岁</span>
+                                </div>
+                                <div class="ibox-content">
+                                    <div style="margin: 0 auto">
+                                        <img src="{$vo.avatar}" width="50px" height="50px"/>
+                                        <span style="font-size: 10px;width:104px;overflow: hidden;display: inline-block">{$vo.area}</span>
+                                    </div>
+
+                                    <div style="margin:10px 50px"><button class="btn btn-primary" type="button" data-uid="{$vo.id}" onclick="addFriend(this)">加好友</button></div>
+                                </div>
+                            </div>
+                        </div>
+                        {/foreach}
+                        {/if}
+                    </div>
+                </div>
+                <div id="tab-2" class="tab-pane">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-content">
+                                    <form class="form-horizontal m-t" id="commentForm" method="post" action="">
+                                        <div class="form-group">
+                                            <div class="col-sm-10">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" name="search_txt" placeholder="输入群组名称" id="search_txt">
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-primary" id="find">搜索</button>
+                                                    </span>
+                                                                    &nbsp;&nbsp;&nbsp;
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-w-m btn-warning" id="addGroup">创建群组</button>
+                                                    </span>
+                                                                    &nbsp;&nbsp;&nbsp;
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-w-m btn-primary" id="myGroup">我的群组</button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 最近新建的分组 -->
+                    <div class="row">
+                        <div class="col-sm-3"><label id="search_title">最近新添加的群组</label></div>
+                    </div>
+                    <div class="row" id="search_data">
+                        {if !empty($group)}
+                        {foreach name="group" item="vo"}
+                        <div class="col-sm-3">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>{$vo.group_name}</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <div style="margin: 0 auto">
+                                        <img src="{$vo.avatar}" width="50px" height="50px" style="margin-left:50px"/>
+                                    </div>
+                                    <div style="margin:10px 50px"><button class="btn btn-primary" type="button" data-id="{$vo.id}" data-owner="{$vo.owner_id}" onclick="joinGroup(this)">加入</button></div>
+                                </div>
+                            </div>
+                        </div>
+                        {/foreach}
+                        {/if}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 选择省市区 -->
+<div class="wrapper wrapper-content animated" id="show" style="display: none">
+    <div class="row">
+        <div class="col-sm-12">
+            <select class="form-control m-b" id="p">
+                <option value="0" data-id="0">不限区域</option>
+                {foreach name="province" item="vo"}
+                <option value="{$vo.area_name}" data-id="{$vo.id}">{$vo.area_name}</option>
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <select class="form-control m-b" id="c" disabled>
+                <option value="0" data-id="0">请选择城市</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <select class="form-control m-b" id="a" disabled>
+                <option value="0" data-id="0">请选择区</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-4 col-sm-offset-4" style="margin-bottom: 10px">
+        <button class="btn btn-primary" type="submit" id="makesure">确认</button>
+    </div>
+</div>
+<input type="hidden" id="pname"/>
+<input type="hidden" id="cname"/>
+<input type="hidden" id="aname"/>
+
+<script src="__COMMON__/jquery.min.js"></script>
+<script src="__COMMON__/bootstrap.min.js?v=3.3.6"></script>
+<script src="__COMMON__/layui/layui.js"></script>
+<script type="text/javascript">
+    var area_url = "{:url('findgroup/getArea')}";
+    var search_user_url = "{:url('finduser/index')}";
+    var search_group_url = "{:url('findgroup/search')}";
+    var add_group_url = "{:url('findgroup/addgroup')}";
+    var my_group_url = "{:url('findgroup/myGroup')}";
+    var join_group_url = "{:url('findgroup/joinGroup')}";
+    var check_group_url = "{:url('findgroup/checkGroupAuth')}";
+    var apply_friend_url = "{:url('msgbox/applyFriend')}";
+    var apply_group_url = "{:url('findgroup/applyGroup')}";
+</script>
+<script src="__COMMON__/js/find.js"></script>
+</body>
+</html>

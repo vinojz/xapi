@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>laychat-v3.0 - 创建群组</title>
+    <link rel="stylesheet" href="__COMMON__/layui/css/layui.css">
+    <style>
+        .tab_hover{background:#1E9FFF;color:white}
+        .layui-form-pane blockquote{cursor: pointer}
+    </style>
+</head>
+<body>
+<div class="main layui-clear" style="margin-top:15px;padding: 10px">
+    <blockquote class="layui-elem-quote">
+        确定举报 {$user.user_name} ?
+    </blockquote>
+    <div class="layui-form layui-form-pane" style="width: 80%;margin: 0 auto" id="retype">
+        {if !empty($retype)}
+        {foreach name="retype" item="vo" key="key"}
+        <blockquote class="layui-elem-quote layui-quote-nm retype" data-id="{$key}" data-data="{$vo}">
+            {$vo}
+            <i class="layui-icon" style="float: right">&#xe602;</i>
+        </blockquote>
+        {/foreach}
+        {/if}
+    </div>
+    <!-- detail -->
+    {if !empty($redetail)}
+    {foreach name="redetail" item="vo" key="key"}
+    <div class="layui-form layui-form-pane" style="width: 80%;margin: 0 auto;display: none" data-id="{$key}">
+        {foreach name="vo" item="v" key="k"}
+        <blockquote class="layui-elem-quote layui-quote-nm redetail" data-data="{$v}">
+            {$v}
+            <i class="layui-icon" style="float: right">&#xe602;</i>
+        </blockquote>
+        {/foreach}
+        <button class="layui-btn layui-btn-mini" style="float: right">上一步</button>
+    </div>
+    {/foreach}
+    {/if}
+
+    <!-- final -->
+    <div class="layui-form layui-form-pane" style="margin: 0 auto;display: none" id="final">
+        <div class="layui-field-box">
+            我们还会将您于  {$user.user_name}  的最近 5条 聊天记录作为证据一并提交
+        </div>
+        <button class="layui-btn layui-btn-small" style="float:right;margin-top: 10px">确定提交</button>
+    </div>
+</div>
+<input type="hidden" id="report_type"/>
+<input type="hidden" id="report_detail"/>
+<script src="__COMMON__/layui/layui.js"></script>
+<script type="text/javascript">
+    var reported_uid = "{$user.id}";
+    var reported_user = "{$user.user_name}";
+    var do_report_url = "{:url('tools/doReport')}";
+
+    layui.use(['layer', 'jquery'], function(){
+        var layer = layui.layer,
+                $ = layui.jquery;
+
+        $(function(){
+           $(".layui-form-pane blockquote").hover(function(){
+               $(this).addClass('tab_hover');
+           }, function(){
+               $(this).removeClass('tab_hover');
+           }) ;
+
+            $(".retype").click(function(){
+                var type_id = $(this).attr('data-id');
+                $("div[data-id=" + type_id + "]").show();
+                $('#retype').hide();
+                $("#report_type").val($(this).attr('data-data'));
+                $("#report_detail").val('');
+            });
+
+            $(".redetail").click(function(){
+                $("#report_detail").val($(this).attr('data-data'));
+                $(this).parent().hide();
+                $("#final").show();
+            });
+
+            $(".layui-btn-mini").click(function(){
+                $(this).parent().hide();
+                $('#retype').show();
+            });
+
+            $("#final button").click(function(){
+                var report_type = $("#report_type").val();
+                var report_detail = $("#report_detail").val();
+                if('' == report_type || '' == report_detail){
+                    layer.msg('举报消息有误', {time:1500});
+                    return ;
+                }
+
+                $.post(do_report_url,
+                        {
+                            'reported_uid' : reported_uid,
+                            'reported_user' : reported_user,
+                            'report_type' : report_type,
+                            'report_detail' : report_detail
+                        }
+                , function(res){
+                    if(1 == res.code){
+                        layer.msg(res.msg, {time : 1500});
+                        setTimeout(function(){
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                        }, 1500);
+                    }else{
+                        layer.msg(res.msg, {time : 1500});
+                    }
+                }, 'json');
+            });
+        });
+    });
+</script>
+</body>
+</html>

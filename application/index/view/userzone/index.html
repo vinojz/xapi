@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>laychat-v3.0 - 空间</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="__COMMON__/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__COMMON__/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="__COMMON__/css/animate.min.css" rel="stylesheet">
+    <link href="__COMMON__/css/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="__COMMON__/css/tool.css" rel="stylesheet">
+    <link href="__COMMON__/layui/css/layui.css" rel="stylesheet">
+    <style>
+        .social-body{padding-left:50px;padding-right:50px;line-height:160%;}
+        .media-body{padding-left:20px;padding-right:20px;line-height:160%;}
+        .social-footer .media-body img{width: 22px;height: 22px}
+    </style>
+</head>
+<body class="gray-bg" style="background:#F7F7F7 url('__COMMON__/images/zone.jpg') repeat-x;">
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="ibox">
+                <div class="ibox-content text-center">
+                    <h3 class="m-b-xxs">{$user}的空间</h3>
+                </div>
+            </div>
+            <div id="blog_flow">
+                <!-- 动态模板 -->
+                {if !empty('blogs')}
+                {foreach name="blogs" item="vo"}
+                <div class="social-feed-separated">
+                    <div class="social-avatar">
+                        <a href="">
+                            <img alt="image" src="{$vo.post_avatar}">
+                        </a>
+                    </div>
+                    <div class="social-feed-box">
+                        <div class="social-avatar">
+                            <a href="javascript:;" style="color:#337AB7">
+                                {if condition="$vo['post_user'] eq $user"}我{else/}{$vo.post_user}{/if}
+                            </a>
+                            <small class="text-muted">{$vo.post_time|date="Y-m-d H:i"}</small>
+                        </div>
+                        <div class="social-body">
+                            <p>{$vo.content}</p>
+                            <div class="btn-group">
+                                <button class="btn btn-white btn-xs" data-id="{$vo.id}" onclick="comment(this)">
+                                    <i class="fa fa-comments"></i> 评论
+                                </button>
+                            </div>
+                        </div>
+                        <div class="social-footer">
+                            <div class="social-comment">
+                                {$vo.id|getComment=###}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                {/foreach}
+                {/if}
+            </div>
+            <!-- 动态模板 -->
+            <div id="page" style="float: right">
+                {$blogs->render()}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 漂浮工具条 -->
+<div class="floating_ck">
+    <dl>
+        <dt></dt>
+        <dd class="consult">
+            <span>发表说说</span>
+        </dd>
+        <dd class="return">
+            <span onClick="gotoTop();return false;">返回顶部</span>
+        </dd>
+    </dl>
+</div>
+
+<!-- 发表说说的box -->
+<div id="blog_box" style="display: none;padding:15px">
+    <textarea class="layui-textarea" id="LAY_demo1" style="display: none">
+
+    </textarea>
+    <div class="site-demo-button" style="margin-top: 20px;float:right">
+        <button class="layui-btn site-demo-layedit" data-type="content">发表</button>
+    </div>
+</div>
+
+<!-- 评论box -->
+<div id="comment_box" style="display: none;padding:15px">
+    <textarea class="layui-textarea" id="LAY_demo2" style="display: none">
+
+    </textarea>
+    <div class="site-demo-button" style="margin-top: 20px;float:right">
+        <button class="layui-btn site-demo-layedit" data-type="comment" id="c_btn">发表</button>
+    </div>
+</div>
+
+<script src="__COMMON__/jquery.min.js?v=2.1.4"></script>
+<script src="__COMMON__/bootstrap.min.js?v=3.3.6"></script>
+<script src="__COMMON__/js/top.js"></script>
+<script src="__COMMON__/layui/layui.js"></script>
+<script type="text/javascript">
+    var img_url = "{:url('userzone/upImg')}";
+    var post_tips_url = "{:url('userzone/postTips')}";
+    var post_comment_url = "{:url('userzone/postComment')}";
+</script>
+<script type="text/javascript" src="__COMMON__/js/zones.js"></script>
+</body>
+</html>

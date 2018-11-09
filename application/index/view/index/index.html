@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Laychat-v3.0</title>
+    <link rel="stylesheet" href="__COMMON__/layui/css/layui.css" media="all">
+    <style>.layui-layim-user{cursor: pointer}</style>
+    <script src="__COMMON__/jquery.min.js"></script>
+    <script src="__COMMON__/RecordRTC.js"></script>
+</head>
+<body>
+<input type="hidden" id="audio_src"/>
+<!-- audio box -->
+<div class="wrapper wrapper-content animated" id="audio_box" style="display: none;margin-top: 10px">
+    <div class="row">
+        <span id="tips" style="margin-left:26%; color:red;"></span>
+        <div class="col-sm-12" style="text-align: center;margin-top:10px">
+            <img src="__COMMON__/images/audio.png" width="100px" height="100px" id="a_pic"/>
+        </div>
+    </div>
+    <div class="col-sm-4 col-sm-offset-4" style="margin:10px 0px 0px 20px">
+        <button class="layui-btn layui-btn-small" id="say">开始说话</button>
+        <button class="layui-btn layui-btn-small layui-btn-danger layui-btn-disabled" id="over—say">结束发送</button>
+    </div>
+</div>
+<!-- audio box -->
+<script type="text/javascript">
+    var my_events;
+    var user_list_url = "{:url('index/getList')}";
+    var member_list_url = "{:url('index/getMembers')}";
+    var upload_img_url = "{:url('upload/uploadimg')}";
+    var upload_file_url = "{:url('upload/uploadFile')}";
+    var msg_box_url = "{:url('Msgbox/index')}";
+    var find_url = "{:url('findgroup/index')}";
+    var chatlog_url = "{:url('Chatlog/index')}";
+    var change_sign_url = "{:url('chatuser/changeSign')}";
+    var chat_user_url = "{:url('chatuser/index')}";
+    var save_audio_url = "{:url('tools/saveAudio')}";
+    var get_noread_url = "{:url('msgbox/getNoRead')}";
+    var uid = "{$uinfo.id}";
+    var uname = "{$uinfo.username}";
+    var avatar = "{$uinfo.avatar}";
+    var sign = "{$uinfo.sign}";
+    var join_group_url = "{:url('findgroup/joinDetail')}";
+</script>
+<script src="__COMMON__/layui/layui.js"></script>
+<script type="text/javascript" src="__COMMON__/js/audio.js"></script>
+<script type="text/javascript" src="__COMMON__/js/main.js"></script>
+</body>
+</html>

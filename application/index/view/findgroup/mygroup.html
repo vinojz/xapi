@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>群组列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="__COMMON__/layui/css/layui.css" media="all">
+    <link rel="stylesheet" type="text/css" href="__COMMON__/bootstrap/css/bootstrap.css" media="all">
+    <link rel="stylesheet" type="text/css" href="__COMMON__/global.css" media="all">
+    <link rel="stylesheet" type="text/css" href="__CSS__/personal.css" media="all">
+</head>
+<body>
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        <div class="layui-tab">
+            <blockquote class="layui-elem-quote mylog-info-tit">
+                <button class="layui-btn layui-btn-small" onclick="history.back();">
+                    <i class="layui-icon" title="后退"></i>
+                </button>
+                <button class="layui-btn layui-btn-danger layui-btn-small" onclick="break_up();">解散群组</button>
+                <div style="float: right">
+                    <span id="g_name" style="font-size: 14px;color: red"></span>
+                    <span id="m_num" style="font-size: 14px;color: red"></span>
+                </div>
+            </blockquote>
+            <div class="larry-separate"></div>
+            <div class="layui-tab-content larry-personal-body clearfix mylog-info-box">
+                <!-- 操作日志 -->
+                <div class="layui-tab-item layui-field-box layui-show col-sm-4">
+                    <ul id="mygroup"></ul>
+                </div>
+                <div class="layui-tab-item layui-field-box layui-show col-sm-8">
+                    <table class="layui-table table-hover" lay-even="" lay-skin="nob">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>群成员ID</th>
+                            <th>群成员头像</th>
+                            <th>群成员名</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="view">
+
+                        </tbody>
+                    </table>
+                    <div id="page">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<input type="hidden" id="group_id"/>
+<input type="hidden" id="now_page"/>
+<script type="text/javascript" src="__COMMON__/layui/layui.js"></script>
+<!-- 展示用户信息模板 -->
+<script id="userList" type="text/html">
+    {{# for(var i = 0, len = d.data.length; i < len; i++){ }}
+    <tr>
+        <td></td>
+        <td>{{ d.data[i].user_id }}</td>
+        <td><img src="{{ d.data[i].user_avatar }}" width="25px" height="25px"/></td>
+        <td>{{ d.data[i].user_name }}</td>
+        <td><button class="layui-btn layui-btn-danger layui-btn-mini" onclick="letOut({{ d.data[i].user_id }})">移除出群</button></td>
+    </tr>
+    {{# } }}
+</script>
+
+<script type="text/javascript">
+    var detail_url = "{:url('findgroup/mygroup')}";
+    var remove_member_url = "{:url('findgroup/removeMember')}";
+    var remove_group_url = "{:url('findgroup/removeGroup')}";
+    var group_node = {$group};
+</script>
+<script type="text/javascript" src="__COMMON__/js/mygroup.js"></script>
+</body>
+</html>

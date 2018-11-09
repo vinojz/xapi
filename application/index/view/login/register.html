@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>laychat-v3.0 - 注册</title>
+    <link rel="stylesheet" href="__COMMON__/layui/css/layui.css">
+</head>
+<body>
+<div class="main layui-clear" style="width:40%;margin:0 auto;box-shadow: 2px 10px 15px 8px #888888;padding: 30px;">
+    <blockquote class="layui-elem-quote">
+        laychat-v3.0 注册 账号
+    </blockquote>
+    <div class="layui-form layui-form-pane">
+        <form method="post" id="register_form">
+            <br/>
+            <h2 class="page-title layui-elem-quote layui-quote-nm">账号信息</h2>
+            <hr/>
+            <div class="layui-form-item">
+                <label for="user_name" class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="user_name" name="user_name" lay-verify="username" autocomplete="off"
+                           class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">必填，将会成为您唯一的登入名</div>
+            </div>
+            <div class="layui-form-item">
+                <label for="pwd" class="layui-form-label">密码</label>
+                <div class="layui-input-inline">
+                    <input type="password" id="pwd" name="pwd" lay-verify="pass" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">必填，6到16个字符</div>
+            </div>
+            <div class="layui-form-item">
+                <label for="repwd" class="layui-form-label">重复密码</label>
+                <div class="layui-input-inline">
+                    <input type="password" id="repwd" name="repwd" lay-verify="pass" autocomplete="off"
+                           class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">必填，6到16个字符</div>
+            </div>
+
+            <br/>
+            <h2 class="page-title layui-elem-quote layui-quote-nm">个人信息</h2>
+            <div class="layui-form-item">
+                <label for="repwd" class="layui-form-label">性别</label>
+                <div class="layui-input-block">
+                    <input name="sex" value="1" title="男" checked="" type="radio">
+                    <input name="sex" value="-1" title="女" type="radio">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="repwd" class="layui-form-label">年龄</label>
+                <div class="layui-input-inline">
+                    <input name="age" lay-verify="number" autocomplete="off" class="layui-input" type="number"
+                           value="18">
+                </div>
+                <div class="layui-form-mid layui-word-aux">限数字</div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">居住地区</label>
+                <div class="layui-input-inline">
+                    <select name="province" lay-filter="province">
+                        <option value="">请选择省</option>
+                    </select>
+                </div>
+                <div class="layui-input-inline">
+                    <select name="city" lay-filter="city">
+                        <option value="">请选择市</option>
+                    </select>
+                </div>
+                <div class="layui-input-inline">
+                    <select name="area" lay-filter="area">
+                        <option value="">请选择县/区</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <button class="layui-btn" lay-filter="*" lay-submit>立即注册</button>
+            </div>
+            <div class="layui-form-item fly-form-app">
+                注：所在区域不选择,系统默认为根据ip定位的所在地,只精确到市。<br/>
+                若无法定位，则默认选中 北京-东城区
+            </div>
+        </form>
+    </div>
+</div>
+<script src="__COMMON__/layui/layui.js"></script>
+<script src="__COMMON__/jquery.min.js"></script>
+<script src="__COMMON__/layui/lay/modules/cityselect.js"></script>
+<script type="text/javascript">
+    var area_url = "{:url('findgroup/getArea')}";
+    var do_register_url = "{:url('login/doregister')}";
+    var p_code = "{$local['0']}";
+    var c_code = "{$local['1']}";
+    var a_code = "{$local['2']}";
+</script>
+<script type="text/javascript" src="__COMMON__/js/register.js"></script>
+</body>
+</html>
